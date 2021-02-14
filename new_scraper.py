@@ -76,7 +76,7 @@ def login(email, password):
         facebook_https_prefix = selectors.get("facebook_https_prefix")
         facebook_link_body = selectors.get("facebook_link_body")
         fb_path = facebook_https_prefix + facebook_link_body
-        driver.get(fb_path)
+        driver.get('https://www.facebook.com')
         driver.maximize_window()
 
         # filling the form
@@ -128,10 +128,10 @@ def scrap_profile(user_id):
     #     else:
     #         scan_list = params[item]["scan_list"]
 
-    section = params[item]["section"]
-    elements_path = params[item]["elements_path"]
-    file_names = params[item]["file_names"]
-    save_status = params[item]["save_status"]
+    section = []
+    elements_path = ["//div[@class='_5pcb _4b0l _2q8l']"]
+    file_names = ["Posts.txt"]
+    save_status = 4
 
     scrape_data(
         user_id, [None], section, elements_path, save_status, file_names
@@ -337,11 +337,14 @@ login(cfg["email"], cfg["password"])
     # ids = [dbpf]
 
 while True:
+    os.chdir('/home/zijianan/fb_autoprocessing/')
+    
     time.sleep(1)
     server_db = read_db()
     if len(server_db)!= 0:
         for (dbid,dbpf) in server_db:
             ids = dbpf
+            print(ids)
             try:
                 scrap_profile(ids)
                 with open('/home/zijianan/fb_autoprocessing/data/'+dbid+'/file.csv', 'w') as csvfile:
